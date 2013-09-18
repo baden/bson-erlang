@@ -48,11 +48,11 @@ get_field (<<Tag:8, Bin0/binary>>) ->
 		3 -> get_document (Bin1);
 		4 -> get_array (Bin1);
 		5 -> {BinType, Bin, Bin2} = get_binary (Bin1), {{bin, BinType, Bin}, Bin2};
-		6 -> {undefined, Bin1}; % Treat the deprecated "undefined" value as null, which we call 'undefined'!
+		6 -> {null, Bin1}; % Treat the deprecated "undefined" value as null, which we call 'undefined'!
 		7 -> {Oid, Bin2} = get_oid (Bin1), {{Oid}, Bin2};
 		8 -> <<Bit:8, Bin2 /binary>> = Bin1, {case Bit of 0 -> false; 1 -> true end, Bin2};
 		9 -> get_unixtime (Bin1);
-		10 -> {undefined, Bin1};
+		10 -> {null, Bin1};
 		11 ->
 			{Pat, Bin2} = get_cstring (Bin1),
 			{Opt, Bin3} = get_cstring (Bin2),
@@ -189,7 +189,7 @@ binary_test() ->
 			k1, false,
 			k2, true,
 			l, Time,
-			m, undefined,
+			m, null,
 			n, {regex, <<"foo">>, <<"bar">>},
 			o1, {javascript, {}, <<"function(x) = x + 1;">>},
 			o2, {javascript, {x, 0, y, <<"foo">>}, <<"function(a) = a + x">>},
